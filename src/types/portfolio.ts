@@ -5,6 +5,7 @@ export interface UserData {
   phone: string;
   location: string;
   bio: string;
+  profileImage?: string;
   skills: string[];
   projects: Project[];
   education: Education[];
@@ -13,7 +14,6 @@ export interface UserData {
   linkedin?: string;
   twitter?: string;
   instagram?: string;
-  profileImage?: string; // Base64 encoded image
 }
 
 export interface Project {
