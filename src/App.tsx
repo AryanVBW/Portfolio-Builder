@@ -5,7 +5,7 @@ import { UserData, TemplateId } from './types/portfolio';
 import { Download, Wand2, Sparkles } from 'lucide-react';
 import { generatePortfolioContent } from './services/aiService';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 
 const initialUserData: UserData = {
   name: '',
@@ -156,7 +156,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8">
+      <Toaster position="top-right" />
       <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <motion.div 
           initial={{ y: -20, opacity: 0 }}
