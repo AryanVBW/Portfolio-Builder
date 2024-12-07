@@ -2,6 +2,7 @@ import React from 'react';
 import { UserData } from '../types/portfolio';
 import { PlusCircle, MinusCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Github, Linkedin, Twitter, Instagram } from 'lucide-react';
 
 interface UserFormProps {
   userData: UserData;
@@ -23,6 +24,24 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
     const newProjects = [...userData.projects];
     newProjects.splice(index, 1);
     setUserData({ ...userData, projects: newProjects });
+  };
+
+  const [socialLinks, setSocialLinks] = React.useState({
+    github: userData.github || '',
+    linkedin: userData.linkedin || '',
+    twitter: userData.twitter || '',
+    instagram: userData.instagram || '',
+  });
+
+  const handleSubmit = () => {
+    setUserData({
+      ...userData,
+      projects: userData.projects,
+      github: socialLinks.github,
+      linkedin: socialLinks.linkedin,
+      twitter: socialLinks.twitter,
+      instagram: socialLinks.instagram,
+    });
   };
 
   return (
@@ -173,6 +192,73 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
               </motion.div>
             ))}
           </AnimatePresence>
+        </motion.div>
+
+        <motion.div 
+          className="space-y-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h3 className="text-lg font-medium bg-gradient-to-r from-primary-600 to-secondary-600 text-transparent bg-clip-text">Social Media Links</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* LinkedIn */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Linkedin className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="url"
+                placeholder="LinkedIn Profile URL"
+                value={socialLinks.linkedin}
+                onChange={(e) => setSocialLinks({ ...socialLinks, linkedin: e.target.value })}
+                className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* GitHub */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Github className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="url"
+                placeholder="GitHub Profile URL"
+                value={socialLinks.github}
+                onChange={(e) => setSocialLinks({ ...socialLinks, github: e.target.value })}
+                className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* Twitter */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Twitter className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="url"
+                placeholder="Twitter Profile URL"
+                value={socialLinks.twitter}
+                onChange={(e) => setSocialLinks({ ...socialLinks, twitter: e.target.value })}
+                className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* Instagram */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Instagram className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="url"
+                placeholder="Instagram Profile URL"
+                value={socialLinks.instagram}
+                onChange={(e) => setSocialLinks({ ...socialLinks, instagram: e.target.value })}
+                className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+          </div>
         </motion.div>
       </div>
     </motion.div>

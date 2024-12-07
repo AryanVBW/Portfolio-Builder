@@ -9,7 +9,10 @@ export interface UserData {
   projects: Project[];
   education: Education[];
   experience: Experience[];
-  socialLinks: SocialLinks;
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+  instagram?: string;
 }
 
 export interface Project {
