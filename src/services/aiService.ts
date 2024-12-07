@@ -19,47 +19,41 @@ export async function generatePortfolioContent(userData: UserData): Promise<{ da
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     console.log('Model initialized');
 
-    const prompt = `Generate a professional portfolio content based on the following information:
+    const prompt = `You are a professional portfolio content generator. Generate portfolio content based on the following information in valid JSON format.
+    Use the exact structure provided below, maintaining all fields:
+
+    User Information:
     Name: ${userData.name}
-    Profession: ${userData.profession}
-    Bio: ${userData.bio}
+    Current Role: ${userData.profession}
+    Experience: ${userData.experience} years
+    Education: ${userData.education}
+    Projects: ${JSON.stringify(userData.projects)}
     Skills: ${userData.skills.join(', ')}
-    Projects: ${userData.projects.map(p => `
-      - ${p.title}: ${p.description}
-      Technologies: ${p.technologies.join(', ')}
-    `).join('\n')}
 
-    Please generate a complete portfolio profile with the following structure:
-    1. Professional title (job role/profession)
-    2. Bio (2-3 engaging paragraphs)
-    3. Key skills (categorized by type)
-    4. Projects (3-5 detailed projects)
-    5. Social media suggestions
-    6. Professional achievements
-
-    Make it sound professional, modern, and engaging. Format the response as a JSON object with this structure:
+    Please generate a JSON response with the following structure:
     {
-      "profession": "string",
-      "bio": "string",
+      "profession": "enhanced professional title",
+      "bio": "professional bio (2-3 sentences)",
       "skillCategories": {
-        "technical": ["skill1", "skill2"],
-        "soft": ["skill1", "skill2"],
-        "tools": ["tool1", "tool2"]
+        "technical": ["skill1", "skill2", ...],
+        "soft": ["skill1", "skill2", ...],
+        "tools": ["tool1", "tool2", ...]
       },
-      "projects": [{
-        "title": "string",
-        "description": "string",
-        "technologies": ["tech1", "tech2"],
-        "highlights": ["highlight1", "highlight2"]
-      }],
-      "achievements": ["achievement1", "achievement2"],
+      "projects": [
+        {
+          "title": "project title",
+          "description": "project description (1-2 sentences)",
+          "technologies": ["tech1", "tech2", ...]
+        }
+      ],
       "socialLinks": {
-        "github": "string",
-        "linkedin": "string",
-        "twitter": "string",
-        "website": "string"
+        "linkedin": "suggested LinkedIn headline",
+        "github": "suggested GitHub bio",
+        "twitter": "suggested Twitter bio"
       }
-    }`;
+    }
+
+    Important: Ensure the response is in valid JSON format. Do not include any additional text or markdown, only the JSON object.`;
 
     console.log('Sending request to Gemini API...');
     const result = await model.generateContent(prompt);
@@ -67,11 +61,24 @@ export async function generatePortfolioContent(userData: UserData): Promise<{ da
     
     const response = await result.response;
     const text = response.text();
-    console.log('Response text:', text.substring(0, 100) + '...');
+    console.log('Raw response text:', text);
     
     try {
-      const parsedData = JSON.parse(text);
+      // Clean the response text to ensure it's valid JSON
+      const cleanedText = text.trim()
+        .replace(/^```json/g, '')
+        .replace(/```$/g, '')
+        .replace(/^```/g, '')
+        .trim();
+      
+      const parsedData = JSON.parse(cleanedText);
       console.log('Successfully parsed JSON response');
+      
+      // Validate the response structure
+      if (!parsedData.profession || !parsedData.bio || !parsedData.skillCategories || !parsedData.projects || !parsedData.socialLinks) {
+        throw new Error('Invalid response structure');
+      }
+      
       return { data: parsedData, error: null };
     } catch (error) {
       console.error('Failed to parse AI response:', error);
@@ -80,7 +87,7 @@ export async function generatePortfolioContent(userData: UserData): Promise<{ da
         data: null,
         error: {
           type: 'parse_error',
-          message: 'Failed to parse AI response. Please try again.'
+          message: 'Failed to parse AI response. The service returned an invalid format. Please try again.'
         }
       };
     }
@@ -90,7 +97,6 @@ export async function generatePortfolioContent(userData: UserData): Promise<{ da
       console.error('Error details:', error.message);
     }
 
-    // Check for rate limit error
     if (error.message?.includes('rate limit exceeded')) {
       return {
         data: null,
