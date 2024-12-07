@@ -6,7 +6,12 @@ console.log('API Key loaded:', API_KEY ? 'Yes' : 'No');
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-export async function generatePortfolioContent(userData: UserData) {
+export type AIError = {
+  type: 'rate_limit' | 'api_error' | 'parse_error';
+  message: string;
+};
+
+export async function generatePortfolioContent(userData: UserData): Promise<{ data: any; error: AIError | null }> {
   try {
     console.log('Starting AI content generation...');
     console.log('User data received:', userData);
@@ -67,17 +72,41 @@ export async function generatePortfolioContent(userData: UserData) {
     try {
       const parsedData = JSON.parse(text);
       console.log('Successfully parsed JSON response');
-      return parsedData;
+      return { data: parsedData, error: null };
     } catch (error) {
       console.error('Failed to parse AI response:', error);
       console.log('Raw response:', text);
-      return null;
+      return {
+        data: null,
+        error: {
+          type: 'parse_error',
+          message: 'Failed to parse AI response. Please try again.'
+        }
+      };
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to generate AI content:', error);
     if (error instanceof Error) {
       console.error('Error details:', error.message);
     }
-    return null;
+
+    // Check for rate limit error
+    if (error.message?.includes('rate limit exceeded')) {
+      return {
+        data: null,
+        error: {
+          type: 'rate_limit',
+          message: 'Rate limit exceeded. Please try again in about an hour.'
+        }
+      };
+    }
+
+    return {
+      data: null,
+      error: {
+        type: 'api_error',
+        message: 'An error occurred while generating content. Please try again.'
+      }
+    };
   }
 }

@@ -5,6 +5,7 @@ import { UserData, TemplateId } from './types/portfolio';
 import { Download, Wand2, Sparkles } from 'lucide-react';
 import { generatePortfolioContent } from './services/aiService';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const initialUserData: UserData = {
   name: '',
@@ -103,29 +104,37 @@ function App() {
     
     try {
       console.log('Starting AI generation with user data:', userData);
-      const aiContent = await generatePortfolioContent(userData);
-      console.log('Received AI content:', aiContent);
+      const { data, error } = await generatePortfolioContent(userData);
       
-      if (aiContent) {
+      if (error) {
+        setError(error.message);
+        // If it's a rate limit error, show a more specific message
+        if (error.type === 'rate_limit') {
+          toast.error('Rate limit exceeded. Please try again in about an hour.', {
+            duration: 5000,
+          });
+        } else {
+          toast.error(error.message);
+        }
+      } else if (data) {
         const enhancedData = {
           ...userData,
-          profession: aiContent.profession || userData.profession,
-          bio: aiContent.bio,
+          profession: data.profession || userData.profession,
+          bio: data.bio,
           skills: [
-            ...aiContent.skillCategories.technical,
-            ...aiContent.skillCategories.soft,
-            ...aiContent.skillCategories.tools
+            ...data.skillCategories.technical,
+            ...data.skillCategories.soft,
+            ...data.skillCategories.tools
           ],
-          projects: aiContent.projects.map(project => ({
+          projects: data.projects.map(project => ({
             title: project.title,
             description: project.description,
             technologies: project.technologies
           })),
-          socialLinks: aiContent.socialLinks
+          socialLinks: data.socialLinks
         };
         setPreviewData(enhancedData);
-      } else {
-        setError('Failed to generate AI content. Please try again.');
+        toast.success('Content generated successfully!');
       }
     } catch (error) {
       console.error('Error generating AI content:', error);
