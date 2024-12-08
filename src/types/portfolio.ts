@@ -6,10 +6,12 @@ export interface UserData {
   location: string;
   bio: string;
   profileImage?: string;
+  avatarFileName?: string;
   skills: string[];
   projects: Project[];
   education: Education[];
   experience: Experience[];
+  socialLinks: SocialLinks;
   github?: string;
   linkedin?: string;
   twitter?: string;

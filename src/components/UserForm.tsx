@@ -49,9 +49,16 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        // Get file extension from original file
+        const extension = file.name.split('.').pop() || '';
+        // Create avatar filename with original extension
+        const avatarFileName = `avatar.${extension}`;
+        
+        // Store both the data URL and the filename
         setUserData({
           ...userData,
-          profileImage: reader.result as string
+          profileImage: reader.result as string,
+          avatarFileName: avatarFileName
         });
       };
       reader.readAsDataURL(file);

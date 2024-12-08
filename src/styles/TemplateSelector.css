@@ -1,0 +1,144 @@
+.template-selector {
+  padding: 2rem;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.template-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.template-card.selected {
+  border: 2px solid #3b82f6;
+}
+
+.template-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.template-preview {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.template-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.template-card:hover .template-preview img {
+  transform: scale(1.05);
+}
+
+.template-info {
+  padding: 1.5rem;
+}
+
+.template-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.template-info p {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.template-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.preview-button,
+.select-button {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.preview-button {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.preview-button:hover {
+  background: #e2e8f0;
+}
+
+.select-button {
+  background: #3b82f6;
+  color: white;
+}
+
+.select-button:hover {
+  background: #2563eb;
+}
+
+.template-preview-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+.preview-toggle-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  z-index: 1000;
+}
+
+.preview-toggle-button:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px -2px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .template-selector {
+    padding: 1rem;
+  }
+
+  .template-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .template-actions {
+    flex-direction: column;
+  }
+}

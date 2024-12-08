@@ -19,6 +19,8 @@ const initialUserData: UserData = {
   education: [],
   experience: [],
   socialLinks: {},
+  profileImage: '',
+  avatarFileName: '',
 };
 
 function App() {
@@ -31,6 +33,23 @@ function App() {
   const templates: TemplateId[] = ['minimal', 'modern', 'creative'];
 
   const handleGeneratePortfolio = () => {
+    // If there's a profile image, save it as avatar with original extension
+    if (userData.profileImage && userData.avatarFileName) {
+      // Convert base64 to blob
+      const base64Data = userData.profileImage.split(',')[1];
+      const imageBlob = base64ToBlob(base64Data, 'image/*');
+      
+      // Create a download link for the image
+      const imageUrl = URL.createObjectURL(imageBlob);
+      const imageLink = document.createElement('a');
+      imageLink.href = imageUrl;
+      imageLink.download = userData.avatarFileName;
+      document.body.appendChild(imageLink);
+      imageLink.click();
+      document.body.removeChild(imageLink);
+      URL.revokeObjectURL(imageUrl);
+    }
+
     // Create HTML content based on selected template
     let content = '';
     switch (selectedTemplate) {
@@ -45,7 +64,9 @@ function App() {
               </style>
             </head>
             <body>
-              <!-- Add your minimal template HTML here -->
+              <!-- Reference the avatar image in the HTML -->
+              ${userData.avatarFileName ? `<img src="${userData.avatarFileName}" alt="Profile" class="profile-image">` : ''}
+              <!-- Rest of the template content -->
             </body>
           </html>
         `;
@@ -61,7 +82,9 @@ function App() {
               </style>
             </head>
             <body>
-              <!-- Add your modern template HTML here -->
+              <!-- Reference the avatar image in the HTML -->
+              ${userData.avatarFileName ? `<img src="${userData.avatarFileName}" alt="Profile" class="profile-image">` : ''}
+              <!-- Rest of the template content -->
             </body>
           </html>
         `;
@@ -77,7 +100,9 @@ function App() {
               </style>
             </head>
             <body>
-              <!-- Add your creative template HTML here -->
+              <!-- Reference the avatar image in the HTML -->
+              ${userData.avatarFileName ? `<img src="${userData.avatarFileName}" alt="Profile" class="profile-image">` : ''}
+              <!-- Rest of the template content -->
             </body>
           </html>
         `;
@@ -96,6 +121,22 @@ function App() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  };
+
+  // Helper function to convert base64 to blob
+  const base64ToBlob = (base64: string, type: string): Blob => {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, { type });
   };
 
   const handleAIGenerate = async () => {
