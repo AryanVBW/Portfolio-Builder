@@ -88,7 +88,11 @@ const replaceTemplateContent = (template: string, userData: UserData) => {
 
 ## 🚀 Getting Started
 
-1. Clone the repository
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/AryanVBW/Portfolio-Builder.git
+   cd Portfolio-Builder
+   ```
 2. Install dependencies:
    ```bash
    npm install

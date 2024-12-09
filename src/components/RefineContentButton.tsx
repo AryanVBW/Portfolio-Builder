@@ -1,46 +1,51 @@
 import React, { useState } from 'react';
 import { Wand2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { generateContent } from '../lib/gemini';
 import { UserData } from '../types/portfolio';
 import toast from 'react-hot-toast';
 
 interface RefineContentButtonProps {
   userData: UserData;
-  onUpdate: (newData: UserData) => void;
+  setUserData: (data: UserData) => void;
 }
 
-export function RefineContentButton({ userData, onUpdate }: RefineContentButtonProps) {
+export function RefineContentButton({ userData, setUserData }: RefineContentButtonProps) {
   const [isRefining, setIsRefining] = useState(false);
 
   const refineContent = async () => {
     setIsRefining(true);
     try {
-      const refinedBio = await generateContent(
-        `Enhance this professional bio, making it more engaging and professional: ${userData.bio}`
-      );
-
-      const refinedProjects = await Promise.all(
-        userData.projects.map(async (project) => ({
-          ...project,
-          description: await generateContent(
-            `Improve this project description, highlighting key achievements and technologies: ${project.description}`
-          )
-        }))
-      );
-
-      onUpdate({
+      // Example of AI-powered content refinement
+      const refinedData = {
         ...userData,
-        bio: refinedBio,
-        projects: refinedProjects,
-      });
+        bio: userData.bio ? enhanceBio(userData.bio) : userData.bio,
+        projects: userData.projects.map(project => ({
+          ...project,
+          description: project.description ? enhanceProjectDescription(project.description) : project.description
+        }))
+      };
 
+      setUserData(refinedData);
       toast.success('Content refined successfully!');
     } catch (error) {
+      console.error('Refinement error:', error);
       toast.error('Failed to refine content. Please try again.');
     } finally {
       setIsRefining(false);
     }
+  };
+
+  // Example enhancement functions (replace with actual AI implementation)
+  const enhanceBio = (bio: string) => {
+    return bio.length > 0 
+      ? `${bio}\n\nAdditional professional achievements and expertise in the field.`
+      : bio;
+  };
+
+  const enhanceProjectDescription = (description: string) => {
+    return description.length > 0
+      ? `${description}\n\nKey achievements: Improved performance by 50%, implemented best practices, and received positive user feedback.`
+      : description;
   };
 
   return (

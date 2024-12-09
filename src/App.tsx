@@ -1,27 +1,39 @@
 import React, { useState } from 'react';
 import { UserForm } from './components/UserForm';
-import { TemplatePreview } from './components/TemplatePreview';
 import { UserData, TemplateId } from './types/portfolio';
 import { Download } from 'lucide-react';
 import { generatePortfolioZip, downloadZip } from './lib/github';
 import { Footer } from './components/Footer';
 import { RefineContentButton } from './components/RefineContentButton';
-import { PreviewButton } from './components/PreviewButton';
+import { LivePreview } from './components/LivePreview';
 import { motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
+import { Logo } from './components/Logo';
+import { Github } from 'lucide-react';
 
 const initialUserData: UserData = {
-  name: '',
-  profession: '',
-  email: '',
-  phone: '',
-  location: '',
-  bio: '',
-  skills: [],
-  projects: [],
-  education: [],
-  experience: [],
-  socialLinks: {},
+  name: 'Vivek W',
+  profession: 'Full Stack Developer',
+  email: 'vivek@aryanvbw.tech',
+  phone: '+91 9876543210',
+  location: 'Bangalore, India',
+  bio: 'Passionate Full Stack Developer with expertise in React, Node.js, and cloud technologies. Committed to creating innovative solutions and delivering exceptional user experiences.',
+  skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS'],
+  projects: [
+    {
+      title: 'Portfolio Builder',
+      description: 'A modern web application that helps developers create professional portfolios with ease. Features include AI-powered content refinement and multiple template options.',
+      technologies: ['React', 'TypeScript', 'Tailwind CSS']
+    }
+  ],
+  education: ['B.Tech in Computer Science'],
+  experience: ['Full Stack Developer at Tech Solutions'],
+  socialLinks: {
+    github: 'https://github.com/AryanVBW',
+    linkedin: 'https://linkedin.com/in/aryanvbw',
+    twitter: 'https://twitter.com/aryanvbw'
+  },
+  imageUrl: ''
 };
 
 export default function App() {
@@ -49,92 +61,76 @@ export default function App() {
       <Toaster position="top-right" />
       
       <motion.header
+        className="py-6 px-4 sm:px-6 lg:px-8 bg-gray-800 border-b border-gray-700"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gray-800 border-b border-gray-700"
+        transition={{ duration: 0.5 }}
       >
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-            Portfolio Builder
-          </h1>
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <Logo />
+          <motion.div
+            className="flex items-center gap-4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <a
+              href="https://github.com/AryanVBW/Portfolio-Builder"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Github className="w-6 h-6" />
+              </motion.div>
+            </a>
+          </motion.div>
         </div>
       </motion.header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <motion.div
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left side - User Form */}
+          <motion.div 
+            className="w-full lg:w-1/2"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="mb-6">
-              <RefineContentButton userData={userData} onUpdate={setUserData} />
-            </div>
             <UserForm userData={userData} setUserData={setUserData} />
+            <div className="mt-6 flex gap-4">
+              <RefineContentButton userData={userData} setUserData={setUserData} />
+              <motion.button
+                onClick={handleGeneratePortfolio}
+                disabled={isGenerating}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md ${
+                  isGenerating ? 'bg-gray-600' : 'bg-indigo-600 hover:bg-indigo-700'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Download className="w-5 h-5" />
+                {isGenerating ? 'Generating...' : 'Download Portfolio'}
+              </motion.button>
+            </div>
           </motion.div>
 
-          <motion.div
+          {/* Right side - Live Preview */}
+          <motion.div 
+            className="w-full lg:w-1/2 h-[800px]"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            className="space-y-8"
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-                Choose a Template
-              </h2>
-              <PreviewButton userData={userData} selectedTemplate={selectedTemplate} />
-            </div>
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {templates.map((template) => (
-                <motion.div
-                  key={template}
-                  className={`relative p-4 rounded-lg cursor-pointer ${
-                    selectedTemplate === template
-                      ? 'bg-indigo-600 border-2 border-indigo-400'
-                      : 'bg-gray-800 border-2 border-gray-700'
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedTemplate(template)}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20
-                  }}
-                >
-                  <motion.div
-                    className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0"
-                    animate={{
-                      opacity: selectedTemplate === template ? 0.2 : 0
-                    }}
-                    transition={{ duration: 0.2 }}
-                  />
-                  <div className="relative z-10">
-                    <h3 className="text-xl font-bold capitalize mb-2">{template}</h3>
-                    <PreviewButton template={template} userData={userData} />
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <motion.button
-              onClick={handleGeneratePortfolio}
-              disabled={isGenerating}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Download className="w-5 h-5" />
-              {isGenerating ? 'Generating...' : 'Generate Portfolio'}
-            </motion.button>
+            <LivePreview
+              userData={userData}
+              selectedTemplate={selectedTemplate}
+              onTemplateChange={setSelectedTemplate}
+              templates={templates}
+            />
           </motion.div>
         </div>
       </main>
