@@ -1,3 +1,5 @@
+import { StaticImageData } from 'next/image';
+
 export interface UserData {
   name: string;
   profession: string;
@@ -5,17 +7,12 @@ export interface UserData {
   phone: string;
   location: string;
   bio: string;
-  profileImage?: string;
-  avatarFileName?: string;
   skills: string[];
   projects: Project[];
   education: Education[];
   experience: Experience[];
   socialLinks: SocialLinks;
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
-  instagram?: string;
+  imageUrl?: string;
 }
 
 export interface Project {
@@ -47,8 +44,9 @@ export interface SocialLinks {
   github?: string;
   linkedin?: string;
   twitter?: string;
-  instagram?: string;
+  email?: string;
   website?: string;
+  instagram?: string;
 }
 
-export type TemplateId = 'enhanced';
+export type TemplateId = 'minimal' | 'modern' | 'creative' | 'cyber' | 'future';

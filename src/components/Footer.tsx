@@ -1,39 +1,46 @@
 import React from 'react';
+import { Github, Mail, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaEnvelope } from 'react-icons/fa';
 
-const Footer: React.FC = () => {
+export function Footer() {
   return (
-    <motion.footer 
-      className="footer"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-    >
-      <p>Made with ❤️ by Vivek W</p>
-      <div className="social-icons" style={{ marginTop: '1rem' }}>
-        <motion.a 
-          href="https://github.com/AryanVBW"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+    <footer className="bg-gray-900 text-white py-8">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center space-x-2"
         >
-          <FaGithub size={24} />
-        </motion.a>
-        <motion.a 
-          href="mailto:vivek.aryanvbw@gmail.com"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <FaEnvelope size={24} />
-        </motion.a>
+          <span>Made with</span>
+          <Heart className="w-5 h-5 text-red-500 animate-pulse" />
+          <span>by Vivek W</span>
+        </motion.div>
+        
+        <div className="flex space-x-6">
+          <motion.a
+            href="https://github.com/AryanVBW"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
+          >
+            <Github className="w-5 h-5" />
+            <span>GitHub</span>
+          </motion.a>
+          
+          <motion.a
+            href="mailto:vivek.aryanvbw@gmail.com"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
+          >
+            <Mail className="w-5 h-5" />
+            <span>Email</span>
+          </motion.a>
+        </div>
       </div>
-      <p style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#64748b' }}>
-        © {new Date().getFullYear()} All rights reserved
-      </p>
-    </motion.footer>
+    </footer>
   );
-};
-
-export default Footer;
+}
