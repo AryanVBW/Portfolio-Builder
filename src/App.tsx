@@ -15,8 +15,8 @@ const initialUserData: UserData = {
   name: 'Vivek W',
   profession: 'Full Stack Developer',
   email: 'vivek@aryanvbw.tech',
-  phone: '+91 9876543210',
-  location: 'Bangalore, India',
+  phone: '+91 xxxx xxxx',
+  location: 'pune, India',
   bio: 'Passionate Full Stack Developer with expertise in React, Node.js, and cloud technologies. Committed to creating innovative solutions and delivering exceptional user experiences.',
   skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS'],
   projects: [
@@ -30,8 +30,8 @@ const initialUserData: UserData = {
   experience: ['Full Stack Developer at Tech Solutions'],
   socialLinks: {
     github: 'https://github.com/AryanVBW',
-    linkedin: 'https://linkedin.com/in/aryanvbw',
-    twitter: 'https://twitter.com/aryanvbw'
+    linkedin: 'https://www.linkedin.com/in/vivek-wagadare',
+    twitter: 'https://twitter.com/vivekwagadare'
   },
   imageUrl: ''
 };
