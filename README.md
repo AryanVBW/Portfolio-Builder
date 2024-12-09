@@ -1,135 +1,123 @@
 # Portfolio Builder
 
-A modern, interactive portfolio builder that helps you create stunning developer portfolios with ease. Built with React, TypeScript, and Framer Motion for smooth animations.
+A modern, interactive portfolio builder that helps you create stunning developer portfolios with ease. Built with React, TypeScript, and Tailwind CSS.
+
+![Portfolio Builder Demo](docs/demo.gif)
 
 ## 🌟 Features
 
-- **Interactive Template Selection**: Choose from multiple professionally designed templates
-- **Live Preview**: See your changes in real-time
-- **Smooth Animations**: Enhanced user experience with Framer Motion animations
-- **Responsive Design**: Looks great on all devices
-- **Export Functionality**: Download your portfolio as a ready-to-deploy package
-- **Logo Upload Feature**: Upload a custom logo for your portfolio
+- **Multiple Templates**: Choose from various professionally designed templates
+- **Real-time Preview**: See your changes instantly as you edit
+- **Dark Mode Support**: All templates support system-based dark mode
+- **Responsive Design**: Looks perfect on all devices
+- **Logo Upload**: Add your personal or company logo
+- **Custom Styling**: Easy customization with Tailwind CSS
+- **Export to ZIP**: Download your portfolio as a ready-to-deploy package
+- **SEO Friendly**: Generated portfolios follow SEO best practices
 
-## 🛠️ Technology Stack
-
-- **Frontend Framework**: React with TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Build Tool**: Vite
-- **Package Manager**: npm
-- **Icons**: Lucide React
-- **State Management**: React Hooks
-- **Form Handling**: Custom form components
-- **File Generation**: Custom ZIP generation utility
-
-## 🏗️ Project Structure
-
-```
-portfolio-builder/
-├── src/
-│   ├── components/         # React components
-│   │   ├── UserForm.tsx   # Main form for user data
-│   │   ├── PreviewButton.tsx # Template preview component
-│   │   └── ...
-│   ├── types/             # TypeScript type definitions
-│   ├── lib/               # Utility functions
-│   └── App.tsx           # Main application component
-├── public/               # Static assets
-└── ...config files      # Various configuration files
-```
-
-## 💫 Animation System
-
-The project uses Framer Motion for smooth, professional animations:
-
-1. **Template Selection Animation**
-   - Hover effects with scale transformation
-   - Selection highlight with a smooth border animation
-   - Transition effects when switching between templates
-
-2. **Interactive Elements**
-   - Button hover and click animations
-   - Form input focus animations
-   - Smooth transitions between sections
-
-## 🔄 How It Works
-
-1. **User Input**
-   - Users fill out their information in the UserForm component
-   - Data is stored in React state using the UserData interface
-   - Real-time validation ensures data quality
-
-2. **Template Selection**
-   - Users can browse and preview different templates
-   - Each template has a unique animation on hover and selection
-   - Preview updates in real-time as users make changes
-
-3. **Portfolio Generation**
-   - Selected template is populated with user data
-   - Custom utility functions generate a downloadable ZIP
-   - All assets and dependencies are bundled together
-
-## 🔧 Text Replacement System
-
-The text replacement system works through a combination of:
-1. Template literals for dynamic content insertion
-2. Regular expressions for pattern matching
-3. Custom replacement functions for complex transformations
-
-Example:
-```typescript
-const replaceTemplateContent = (template: string, userData: UserData) => {
-  return template
-    .replace(/{{name}}/g, userData.name)
-    .replace(/{{profession}}/g, userData.profession)
-    // ... more replacements
-};
-```
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/AryanVBW/Portfolio-Builder.git
    cd Portfolio-Builder
    ```
+
 2. Install dependencies:
    ```bash
    npm install
    ```
+
 3. Start the development server:
    ```bash
    npm run dev
    ```
 
-## 📦 Generating Your Portfolio
+4. Open http://localhost:5173 in your browser
 
-To generate your portfolio:
-1. Fill out the user information in the form.
-2. Choose a template from the available options.
-3. Click the **Download Portfolio** button.
-4. A ZIP file will be created containing your portfolio files, including an HTML file, styles, and assets.
-5. The ZIP file will automatically download to your device.
+## 📦 Building Your Portfolio
 
-### Logo Upload Feature
+1. **Fill Your Information**:
+   - Add your personal details
+   - Upload profile picture and logo
+   - Add your skills and experience
+   - Include your projects and education
 
-You can now upload a logo for your portfolio! Simply click on the logo upload section in the Personal Information form, and select your logo image. The logo will be included in the generated portfolio.
+2. **Choose a Template**:
+   - Browse available templates
+   - Preview how your portfolio looks
+   - Switch between templates in real-time
 
-## 🌟 How the Project Works
+3. **Download Your Portfolio**:
+   - Click the "Download Portfolio" button
+   - Get a ZIP file with your complete portfolio
+   - Ready to deploy to any web hosting service
 
-1. **User Input**: Users enter their personal and professional information in the UserForm component.
-2. **Template Selection**: Users can select a template, which updates the live preview in real-time.
-3. **Portfolio Generation**: Upon clicking the download button, the application generates a ZIP file containing the HTML, CSS, and any uploaded images, ready for deployment.
+## 🎨 Available Templates
 
-## 📝 Documentation
+- **Minimal**: Clean and simple design
+- **Modern**: Contemporary layout with smooth animations
+- **Creative**: Unique design for creative professionals
+- **Cyber**: Tech-inspired futuristic design
+- **Future**: Modern and bold layout
 
-For more details on how to use the application and its features, please refer to the documentation within the codebase or the comments in the components.
+## 🛠️ Technical Details
 
-## 💻 Contributing
+### Technology Stack
+- **Frontend**: React 18 with TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Context
+- **Build Tool**: Vite
+- **File Generation**: JSZip
+- **Icons**: Lucide React
 
-We welcome contributions! If you'd like to contribute to this project, please fork the repository and submit a pull request with your changes.
+### Project Structure
+See [STRUCTURE.md](docs/STRUCTURE.md) for detailed project structure documentation.
+
+## 📱 Responsive Design
+
+All generated portfolios are fully responsive and tested on:
+- Desktop (1920px and above)
+- Laptop (1024px to 1919px)
+- Tablet (768px to 1023px)
+- Mobile (320px to 767px)
+
+## 🌙 Dark Mode
+
+Dark mode is automatically enabled based on system preferences. The implementation:
+- Uses CSS variables for theming
+- Supports system preference detection
+- Maintains consistent design in both modes
+
+## 🔒 Security
+
+- No server-side storage of personal information
+- All processing done client-side
+- Image handling via base64 encoding
+- No external API dependencies
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## 🐛 Bug Reports
+
+If you find a bug, please open an issue with:
+1. Description of the bug
+2. Steps to reproduce
+3. Expected behavior
+4. Screenshots (if applicable)
+
+## 📞 Contact
+
+- GitHub: [@AryanVBW](https://github.com/AryanVBW)
+- Twitter: [@vivekwagadare](https://twitter.com/vivekwagadare)
+- LinkedIn: [Vivek Wagadare](https://www.linkedin.com/in/vivek-wagadare)
+
+## ⭐ Show Your Support
+
+If you find this project useful, please give it a star on GitHub!
