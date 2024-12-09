@@ -33,7 +33,8 @@ const initialUserData: UserData = {
     linkedin: 'https://www.linkedin.com/in/vivek-wagadare',
     twitter: 'https://twitter.com/vivekwagadare'
   },
-  imageUrl: ''
+  imageUrl: '',
+  logoUrl: ''
 };
 
 export default function App() {
@@ -57,19 +58,19 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="x0">
       <Toaster position="top-right" />
       
       <motion.header
-        className="py-6 px-4 sm:px-6 lg:px-8 bg-gray-800 border-b border-gray-700"
+        className="x1 x2 x3"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="x4 x5 x6">
           <Logo />
           <motion.div
-            className="flex items-center gap-4"
+            className="x7 x8"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -78,7 +79,7 @@ export default function App() {
               href="https://github.com/AryanVBW/Portfolio-Builder"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-white transition-colors"
+              className="x9 xa xb"
             >
               <motion.div
                 whileHover={{ scale: 1.1 }}
@@ -91,23 +92,23 @@ export default function App() {
         </div>
       </motion.header>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <main className="x10 x11 x12">
+        <div className="x13 x14 x15">
           {/* Left side - User Form */}
           <motion.div 
-            className="w-full lg:w-1/2"
+            className="x16 x17"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <UserForm userData={userData} setUserData={setUserData} />
-            <div className="mt-6 flex gap-4">
+            <div className="x18 x19">
               <RefineContentButton userData={userData} setUserData={setUserData} />
               <motion.button
                 onClick={handleGeneratePortfolio}
                 disabled={isGenerating}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md ${
-                  isGenerating ? 'bg-gray-600' : 'bg-indigo-600 hover:bg-indigo-700'
+                className={`x20 x21 ${
+                  isGenerating ? 'x22' : 'x23 x24'
                 }`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -120,7 +121,7 @@ export default function App() {
 
           {/* Right side - Live Preview */}
           <motion.div 
-            className="w-full lg:w-1/2 h-[800px]"
+            className="x25 x26 x27"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}

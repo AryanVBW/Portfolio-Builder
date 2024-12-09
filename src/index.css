@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base styles */
+.x0 { @apply min-h-screen bg-gray-900 text-white; }
+.x1 { @apply py-6 px-4 sm:px-6 lg:px-8; }
+.x2 { @apply bg-gray-800; }
+.x3 { @apply border-b border-gray-700; }
+.x4 { @apply max-w-7xl; }
+.x5 { @apply mx-auto; }
+.x6 { @apply flex justify-between items-center; }
+.x7 { @apply flex; }
+.x8 { @apply items-center gap-4; }
+.x9 { @apply text-gray-300; }
+.xa { @apply hover:text-white; }
+.xb { @apply transition-colors; }
+.x10 { @apply max-w-7xl; }
+.x11 { @apply mx-auto py-6 sm:px-6 lg:px-8; }
+.x12 { @apply flex flex-col lg:flex-row gap-8; }
+.x13 { @apply flex; }
+.x14 { @apply flex-col; }
+.x15 { @apply lg:flex-row gap-8; }
+.x16 { @apply w-full; }
+.x17 { @apply lg:w-1/2; }
+.x18 { @apply mt-6; }
+.x19 { @apply flex gap-4; }
+.x20 { @apply flex items-center gap-2 px-4 py-2 rounded-md; }
+.x21 { @apply transition-colors; }
+.x22 { @apply bg-gray-600; }
+.x23 { @apply bg-indigo-600; }
+.x24 { @apply hover:bg-indigo-700; }
+.x25 { @apply w-full; }
+.x26 { @apply lg:w-1/2; }
+.x27 { @apply h-[800px]; }
+
 @keyframes glitch {
   0% {
     text-shadow: 0.05em 0 0 rgba(255,0,0,0.75),

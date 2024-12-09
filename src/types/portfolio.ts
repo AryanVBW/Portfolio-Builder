@@ -13,6 +13,7 @@ export interface UserData {
   experience: Experience[];
   socialLinks: SocialLinks;
   imageUrl?: string;
+  logoUrl?: string;
 }
 
 export interface Project {

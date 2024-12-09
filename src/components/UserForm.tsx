@@ -62,10 +62,18 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
     >
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-bold text-white">Personal Information</h2>
-        <ImageUpload
-          onImageUpload={(imageUrl) => setUserData({ ...userData, imageUrl })}
-          currentImage={userData.imageUrl}
-        />
+        <div className="flex items-center space-x-4">
+          <ImageUpload
+            onImageUpload={(imageUrl) => setUserData({ ...userData, imageUrl })}
+            currentImage={userData.imageUrl}
+          />
+          <ImageUpload
+            onImageUpload={(logoUrl) => setUserData({ ...userData, logoUrl })}
+            currentImage={userData.logoUrl}
+            label="Logo"
+            className="w-12 h-12"
+          />
+        </div>
       </div>
 
       {/* Section Navigation */}
