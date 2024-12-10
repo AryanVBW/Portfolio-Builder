@@ -4,6 +4,7 @@ import { Maximize2, Minimize2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { UserData, TemplateId } from '../types/portfolio';
 import { CyberTemplate } from './templates/CyberTemplate';
 import { FutureTemplate } from './templates/FutureTemplate';
+import { HKPatelTemplate } from './templates/HKPatelTemplate';
 
 interface LivePreviewProps {
   userData: UserData;
@@ -27,6 +28,8 @@ export function LivePreview({
         return <CyberTemplate userData={userData} />;
       case 'future':
         return <FutureTemplate userData={userData} />;
+      case 'hkpatel':
+        return <HKPatelTemplate userData={userData} />;
       default:
         return <FutureTemplate userData={userData} />;
     }

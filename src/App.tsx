@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import { Logo } from './components/Logo';
 import { Github } from 'lucide-react';
+import { HKPatelTemplate } from './components/templates/HKPatelTemplate';
 
 const initialUserData: UserData = {
   name: '',
@@ -34,10 +35,10 @@ const initialUserData: UserData = {
 
 export default function App() {
   const [userData, setUserData] = useState<UserData>(initialUserData);
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('future');
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('hkpatel');
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const templates: TemplateId[] = ['future', 'cyber', 'creative', 'modern', 'minimal'];
+  const templates: TemplateId[] = ['hkpatel', 'future', 'cyber', 'creative', 'modern', 'minimal'];
 
   const handleGeneratePortfolio = async () => {
     setIsGenerating(true);

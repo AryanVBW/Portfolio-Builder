@@ -7,6 +7,7 @@ import { FutureTemplate } from './templates/FutureTemplate';
 import { CreativeTemplate } from './templates/CreativeTemplate';
 import { ModernTemplate } from './templates/ModernTemplate';
 import { MinimalTemplate } from './templates/MinimalTemplate';
+import { HKPatelTemplate } from './templates/HKPatelTemplate';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface PreviewButtonProps {
@@ -29,6 +30,8 @@ export function PreviewButton({ userData, selectedTemplate }: PreviewButtonProps
         return <ModernTemplate userData={userData} />;
       case 'minimal':
         return <MinimalTemplate userData={userData} />;
+      case 'hkpatel':
+        return <HKPatelTemplate userData={userData} />;
     }
   };
 

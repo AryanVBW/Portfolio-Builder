@@ -50,4 +50,4 @@ export interface SocialLinks {
   instagram?: string;
 }
 
-export type TemplateId = 'minimal' | 'modern' | 'creative' | 'cyber' | 'future';
+export type TemplateId = 'minimal' | 'modern' | 'creative' | 'cyber' | 'future' | 'hkpatel';
