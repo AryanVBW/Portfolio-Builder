@@ -60,6 +60,23 @@ A modern, interactive portfolio builder that helps you create stunning developer
 - **Creative**: Unique design for creative professionals
 - **Cyber**: Tech-inspired futuristic design
 - **Future**: Modern and bold layout
+- **HKPatel**: A template closely resembling the original HK_Patel site
+
+## 🎨 New Template: HKPatel
+
+The HKPatel template closely resembles the original HK_Patel site, featuring:
+- **Header**: Navigation links for easy access to sections.
+- **Hero Section**: A welcoming greeting with a dynamic typing effect.
+- **Skills Section**: Showcases user skills with icons and animations.
+- **Projects Section**: Displays projects with descriptions and technologies used.
+- **Education Section**: Lists educational background with descriptions.
+
+### How to Use the HKPatel Template
+
+1. Select the HKPatel template from the available options in the portfolio builder.
+2. Fill in your personal information, skills, projects, and education.
+3. Preview your portfolio in real-time and make adjustments as needed.
+4. Download your portfolio as a ZIP file when you're ready to deploy.
 
 ## 🛠️ Technical Details
 
