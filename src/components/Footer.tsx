@@ -14,7 +14,7 @@ export function Footer() {
         >
           <span>Made with</span>
           <Heart className="w-5 h-5 text-red-500 animate-pulse" />
-          <span>by Vivek W</span>
+          <span>by Vivek W and Team</span>
         </motion.div>
         
         <div className="flex space-x-6">

@@ -24,6 +24,26 @@ const formSections = {
 export function UserForm({ userData, setUserData }: UserFormProps) {
   const [activeSection, setActiveSection] = useState('personal');
   const [expandedSections, setExpandedSections] = useState<string[]>(['personal']);
+  const [educationEntries, setEducationEntries] = useState([{ degree: '', institution: '', year: '' }]);
+  const [experienceEntries, setExperienceEntries] = useState([{ position: '', company: '', year: '' }]);
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = ['Personal', 'Skills', 'Projects', 'Education', 'Experience', 'Social Links'];
+
+  const addEducationEntry = () => {
+    setEducationEntries([...educationEntries, { degree: '', institution: '', year: '' }]);
+  };
+
+  const removeEducationEntry = (index: number) => {
+    setEducationEntries(educationEntries.filter((_, i) => i !== index));
+  };
+
+  const addExperienceEntry = () => {
+    setExperienceEntries([...experienceEntries, { position: '', company: '', year: '' }]);
+  };
+
+  const removeExperienceEntry = (index: number) => {
+    setExperienceEntries(experienceEntries.filter((_, i) => i !== index));
+  };
 
   const toggleSection = (section: string) => {
     if (expandedSections.includes(section)) {
@@ -32,6 +52,18 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
       setExpandedSections([...expandedSections, section]);
     }
     setActiveSection(section);
+  };
+
+  const nextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const previousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
   const inputVariants = {
@@ -58,9 +90,20 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="space-y-6 bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700"
+      className="space-y-6 bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700 relative overflow-hidden"
     >
-      <div className="flex items-center justify-between mb-8">
+      {/* Background Logo */}
+      <div 
+        className="absolute right-0 top-0 w-64 h-64 opacity-5 pointer-events-none"
+        style={{
+          backgroundImage: 'url(https://github.com/AryanVBW/Portfolio-Builder/releases/download/v2/x-removebg-preview.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+        }}
+      />
+
+      <div className="flex items-center justify-between mb-8 relative z-10">
         <h2 className="text-2xl font-bold text-white">Personal Information</h2>
         <div className="flex items-center space-x-4">
           <ImageUpload
@@ -76,132 +119,143 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
         </div>
       </div>
 
-      {/* Section Navigation */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {Object.entries(formSections).map(([key, label]) => (
-          <motion.button
-            key={key}
-            onClick={() => toggleSection(key)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all
-              ${activeSection === key
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {label}
-          </motion.button>
+      {/* Step Indicators */}
+      <div className="flex justify-between mb-4">
+        {steps.map((step, index) => (
+          <span key={index} className={`text-sm font-semibold ${index === currentStep ? 'text-indigo-400' : 'text-gray-400'}`}>Step {index + 1}: {step}</span>
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
-        {/* Personal Information Section */}
-        {expandedSections.includes('personal') && (
-          <motion.div
-            key="personal"
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={containerVariants}
-            className="space-y-4"
-          >
-            <motion.div variants={inputVariants} custom={0}>
-              <div className="flex items-center gap-2 mb-2">
-                <User className="w-5 h-5 text-indigo-400" />
-                <label className="block text-sm font-medium text-gray-300">Full Name</label>
-              </div>
-              <input
-                type="text"
-                value={userData.name}
-                onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-                className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                placeholder="Vivek W"
-              />
-            </motion.div>
+      {/* Render Current Step */}
+      {currentStep === 0 && (
+        <AnimatePresence mode="wait">
+          {/* Section Navigation */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {Object.entries(formSections).map(([key, label]) => (
+              <motion.button
+                key={key}
+                onClick={() => toggleSection(key)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all
+                  ${activeSection === key
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {label}
+              </motion.button>
+            ))}
+          </div>
 
-            <motion.div variants={inputVariants} custom={1}>
-              <div className="flex items-center gap-2 mb-2">
-                <Briefcase className="w-5 h-5 text-indigo-400" />
-                <label className="block text-sm font-medium text-gray-300">Profession</label>
-              </div>
-              <input
-                type="text"
-                value={userData.profession}
-                onChange={(e) => setUserData({ ...userData, profession: e.target.value })}
-                className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                placeholder="Full Stack Developer"
-              />
-            </motion.div>
-
-            <motion.div variants={inputVariants} custom={2}>
-              <div className="flex items-center gap-2 mb-2">
-                <Mail className="w-5 h-5 text-indigo-400" />
-                <label className="block text-sm font-medium text-gray-300">Email</label>
-              </div>
-              <input
-                type="email"
-                value={userData.email}
-                onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-                className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                placeholder="vivek@aryanvbw.tech"
-              />
-            </motion.div>
-
-            <motion.div variants={inputVariants} custom={3}>
-              <div className="flex items-center gap-2 mb-2">
-                <Phone className="w-5 h-5 text-indigo-400" />
-                <label className="block text-sm font-medium text-gray-300">Phone</label>
-              </div>
-              <input
-                type="tel"
-                value={userData.phone}
-                onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
-                className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                placeholder="+91 xxxxx xxxxx"
-              />
-            </motion.div>
-
-            <motion.div variants={inputVariants} custom={4}>
-              <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-5 h-5 text-indigo-400" />
-                <label className="block text-sm font-medium text-gray-300">Location</label>
-              </div>
-              <input
-                type="text"
-                value={userData.location}
-                onChange={(e) => setUserData({ ...userData, location: e.target.value })}
-                className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                placeholder="Bangalore, India"
-              />
-            </motion.div>
-
-            <motion.div variants={inputVariants} custom={5}>
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <GraduationCap className="w-5 h-5 text-indigo-400" />
-                  <label className="block text-sm font-medium text-gray-300">Professional Bio</label>
+          {/* Personal Information Section */}
+          {expandedSections.includes('personal') && (
+            <motion.div
+              key="personal"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={containerVariants}
+              className="space-y-4"
+            >
+              <motion.div variants={inputVariants} custom={0}>
+                <div className="flex items-center gap-2 mb-2">
+                  <User className="w-5 h-5 text-indigo-400" />
+                  <label className="block text-sm font-medium text-gray-300">Full Name</label>
                 </div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <RefineContentButton userData={userData} setUserData={setUserData} />
-                </motion.div>
-              </div>
-              <textarea
-                value={userData.bio}
-                onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
-                rows={4}
-                className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                placeholder="Passionate Full Stack Developer with expertise in React, Node.js, and cloud technologies..."
-              />
-            </motion.div>
-          </motion.div>
-        )}
+                <input
+                  type="text"
+                  value={userData.name}
+                  onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  placeholder="Vivek W"
+                />
+              </motion.div>
 
-        {/* Skills Section */}
-        {expandedSections.includes('skills') && (
+              <motion.div variants={inputVariants} custom={1}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Briefcase className="w-5 h-5 text-indigo-400" />
+                  <label className="block text-sm font-medium text-gray-300">Profession</label>
+                </div>
+                <input
+                  type="text"
+                  value={userData.profession}
+                  onChange={(e) => setUserData({ ...userData, profession: e.target.value })}
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  placeholder="Full Stack Developer"
+                />
+              </motion.div>
+
+              <motion.div variants={inputVariants} custom={2}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Mail className="w-5 h-5 text-indigo-400" />
+                  <label className="block text-sm font-medium text-gray-300">Email</label>
+                </div>
+                <input
+                  type="email"
+                  value={userData.email}
+                  onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  placeholder="vivek@aryanvbw.tech"
+                />
+              </motion.div>
+
+              <motion.div variants={inputVariants} custom={3}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Phone className="w-5 h-5 text-indigo-400" />
+                  <label className="block text-sm font-medium text-gray-300">Phone</label>
+                </div>
+                <input
+                  type="tel"
+                  value={userData.phone}
+                  onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  placeholder="+91 xxxxx xxxxx"
+                />
+              </motion.div>
+
+              <motion.div variants={inputVariants} custom={4}>
+                <div className="flex items-center gap-2 mb-2">
+                  <MapPin className="w-5 h-5 text-indigo-400" />
+                  <label className="block text-sm font-medium text-gray-300">Location</label>
+                </div>
+                <input
+                  type="text"
+                  value={userData.location}
+                  onChange={(e) => setUserData({ ...userData, location: e.target.value })}
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  placeholder="Bangalore, India"
+                />
+              </motion.div>
+
+              <motion.div variants={inputVariants} custom={5}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="w-5 h-5 text-indigo-400" />
+                    <label className="block text-sm font-medium text-gray-300">Professional Bio</label>
+                  </div>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <RefineContentButton userData={userData} setUserData={setUserData} />
+                  </motion.div>
+                </div>
+                <textarea
+                  value={userData.bio}
+                  onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
+                  rows={4}
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  placeholder="Passionate Full Stack Developer with expertise in React, Node.js, and cloud technologies..."
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+      {currentStep === 1 && (
+        <AnimatePresence mode="wait">
+          {/* Skills Section */}
           <motion.div
             key="skills"
             initial="hidden"
@@ -257,10 +311,11 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
               </div>
             </motion.div>
           </motion.div>
-        )}
-
-        {/* Projects Section */}
-        {expandedSections.includes('projects') && (
+        </AnimatePresence>
+      )}
+      {currentStep === 2 && (
+        <AnimatePresence mode="wait">
+          {/* Projects Section */}
           <motion.div
             key="projects"
             initial="hidden"
@@ -414,10 +469,11 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
               </motion.div>
             ))}
           </motion.div>
-        )}
-
-        {/* Education Section */}
-        {expandedSections.includes('education') && (
+        </AnimatePresence>
+      )}
+      {currentStep === 3 && (
+        <AnimatePresence mode="wait">
+          {/* Education Section */}
           <motion.div
             key="education"
             initial="hidden"
@@ -426,57 +482,64 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
             variants={containerVariants}
             className="space-y-4"
           >
-            <motion.div variants={inputVariants} custom={0}>
-              <div className="flex items-center gap-2 mb-2">
-                <GraduationCap className="w-5 h-5 text-indigo-400" />
-                <label className="block text-sm font-medium text-gray-300">Education</label>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {userData.education.map((education, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center gap-2 bg-gray-700 px-3 py-1 rounded-full"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
+            <h3 className="text-xl font-semibold text-white mb-4">Education</h3>
+            {educationEntries.map((entry, index) => (
+              <motion.div key={index} className="space-y-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Degree"
+                    value={entry.degree}
+                    onChange={(e) => {
+                      const newEntries = [...educationEntries];
+                      newEntries[index].degree = e.target.value;
+                      setEducationEntries(newEntries);
+                    }}
+                    className="flex-1 rounded-md bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Institution"
+                    value={entry.institution}
+                    onChange={(e) => {
+                      const newEntries = [...educationEntries];
+                      newEntries[index].institution = e.target.value;
+                      setEducationEntries(newEntries);
+                    }}
+                    className="flex-1 rounded-md bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Year"
+                    value={entry.year}
+                    onChange={(e) => {
+                      const newEntries = [...educationEntries];
+                      newEntries[index].year = e.target.value;
+                      setEducationEntries(newEntries);
+                    }}
+                    className="flex-1 rounded-md bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <button
+                    onClick={() => removeEducationEntry(index)}
+                    className="text-red-500 hover:text-red-700"
                   >
-                    <span className="text-sm text-gray-300">{education}</span>
-                    <button
-                      onClick={() => {
-                        const newEducation = [...userData.education];
-                        newEducation.splice(index, 1);
-                        setUserData({ ...userData, education: newEducation });
-                      }}
-                      className="text-gray-400 hover:text-red-400"
-                    >
-                      <MinusCircle className="w-4 h-4" />
-                    </button>
-                  </motion.div>
-                ))}
-                <motion.button
-                  onClick={() => {
-                    const education = prompt('Enter a new education:');
-                    if (education) {
-                      setUserData({
-                        ...userData,
-                        education: [...userData.education, education]
-                      });
-                    }
-                  }}
-                  className="flex items-center gap-1 px-3 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add Education</span>
-                </motion.button>
-              </div>
-            </motion.div>
+                    Remove
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+            <button
+              onClick={addEducationEntry}
+              className="mt-2 text-indigo-400 hover:text-indigo-600"
+            >
+              Add Education
+            </button>
           </motion.div>
-        )}
-
-        {/* Experience Section */}
-        {expandedSections.includes('experience') && (
+        </AnimatePresence>
+      )}
+      {currentStep === 4 && (
+        <AnimatePresence mode="wait">
+          {/* Experience Section */}
           <motion.div
             key="experience"
             initial="hidden"
@@ -485,71 +548,85 @@ export function UserForm({ userData, setUserData }: UserFormProps) {
             variants={containerVariants}
             className="space-y-4"
           >
-            <motion.div variants={inputVariants} custom={0}>
-              <div className="flex items-center gap-2 mb-2">
-                <Briefcase className="w-5 h-5 text-indigo-400" />
-                <label className="block text-sm font-medium text-gray-300">Experience</label>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {userData.experience.map((experience, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center gap-2 bg-gray-700 px-3 py-1 rounded-full"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
+            <h3 className="text-xl font-semibold text-white mb-4">Experience</h3>
+            {experienceEntries.map((entry, index) => (
+              <motion.div key={index} className="space-y-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Position"
+                    value={entry.position}
+                    onChange={(e) => {
+                      const newEntries = [...experienceEntries];
+                      newEntries[index].position = e.target.value;
+                      setExperienceEntries(newEntries);
+                    }}
+                    className="flex-1 rounded-md bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Company"
+                    value={entry.company}
+                    onChange={(e) => {
+                      const newEntries = [...experienceEntries];
+                      newEntries[index].company = e.target.value;
+                      setExperienceEntries(newEntries);
+                    }}
+                    className="flex-1 rounded-md bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Year"
+                    value={entry.year}
+                    onChange={(e) => {
+                      const newEntries = [...experienceEntries];
+                      newEntries[index].year = e.target.value;
+                      setExperienceEntries(newEntries);
+                    }}
+                    className="flex-1 rounded-md bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                  <button
+                    onClick={() => removeExperienceEntry(index)}
+                    className="text-red-500 hover:text-red-700"
                   >
-                    <span className="text-sm text-gray-300">{experience}</span>
-                    <button
-                      onClick={() => {
-                        const newExperience = [...userData.experience];
-                        newExperience.splice(index, 1);
-                        setUserData({ ...userData, experience: newExperience });
-                      }}
-                      className="text-gray-400 hover:text-red-400"
-                    >
-                      <MinusCircle className="w-4 h-4" />
-                    </button>
-                  </motion.div>
-                ))}
-                <motion.button
-                  onClick={() => {
-                    const experience = prompt('Enter a new experience:');
-                    if (experience) {
-                      setUserData({
-                        ...userData,
-                        experience: [...userData.experience, experience]
-                      });
-                    }
-                  }}
-                  className="flex items-center gap-1 px-3 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add Experience</span>
-                </motion.button>
-              </div>
-            </motion.div>
+                    Remove
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+            <button
+              onClick={addExperienceEntry}
+              className="mt-2 text-indigo-400 hover:text-indigo-600"
+            >
+              Add Experience
+            </button>
           </motion.div>
-        )}
-
-        {/* Social Links Section */}
-        {expandedSections.includes('social') && (
+        </AnimatePresence>
+      )}
+      {currentStep === 5 && (
+        <AnimatePresence mode="wait">
+          {/* Social Links Section */}
           <motion.div
             key="social"
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={containerVariants}
+            className="space-y-4"
           >
             <SocialLinks
               socialLinks={userData.socialLinks}
-              onChange={(links) => setUserData({ ...userData, socialLinks: links })}
+              onUpdate={(links) => setUserData({ ...userData, socialLinks: links })}
             />
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      )}
+
+      {/* Navigation Buttons */}
+      <div className="flex justify-between mt-4">
+        <button onClick={previousStep} disabled={currentStep === 0} className="text-indigo-400 hover:text-indigo-600">Previous</button>
+        <button onClick={nextStep} disabled={currentStep === steps.length - 1} className="text-indigo-400 hover:text-indigo-600">Next</button>
+      </div>
     </motion.div>
   );
 }
